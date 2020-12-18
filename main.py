@@ -16,10 +16,19 @@ def get_quote():
   quote = '*"'+json_data[0]["q"] + '"*\n -' + json_data[0]["a"]
   return(quote)
 
-def get_funaz():
+def get_funaz1():
   response = requests.get("https://official-joke-api.appspot.com/random_joke")
   json_data = json.loads(response.text)
   funaz = "**"+json_data["setup"]+"**\n"+json_data["punchline"]
+  return(funaz)
+
+def get_funaz2():
+  response = requests.get("https://sv443.net/jokeapi/v2/joke/Any")
+  json_data = json.loads(response.text)
+  if json_data["type"] == "single":
+    funaz = json_data["joke"]
+  else:
+    funaz = "**" + json_data["setup"] + "**\n" + json_data["delivery"]
   return(funaz)
 
 @client.event
@@ -36,7 +45,7 @@ async def on_message(message):
     if message.content.startswith("c!help useful"):
       await message.channel.send('```yaml\n--== Chicktron Useful Commands Page ==--\n\n\nCommands are prefixed with: c!\n\n- info: Info about Chicktron\n- rand: Takes 2 numbers, generates a random one between the 2 (example: "c!rand 1 10" would return a random number between 1-10)```')
     elif message.content.startswith("c!help fun"):
-      await message.channel.send("```yaml\n--== Chicktron Fun Commands Page ==--\n\n\nCommands are prefixed with: c!\n\n- funaz: Random joke (fuňáz)\n- quote: Random inspirational quote\n- say: Make Chicktron say something\n\n- Reply Commands: chicktron, idk\n\nCan you find the 3 secret commands?```")
+      await message.channel.send("```yaml\n--== Chicktron Fun Commands Page ==--\n\n\nCommands are prefixed with: c!\n\n- funaz: Random joke (fuňáz)\n- funaz2: Random joke from 2nd database, may contain inappropriate jokes\n- quote: Random inspirational quote\n- say: Make Chicktron say something\n\n- Reply Commands: chicktron, idk\n\nCan you find the 3 secret commands?```")
     else:
       await message.channel.send("```yaml\n--== Chicktron Help Commands Page ==--\n\n\nCommands are prefixed with: c!\n\n- help: This help\n- help useful: Useful commands\n- help fun: Fun commands```")
 
@@ -60,11 +69,21 @@ async def on_message(message):
     await message.channel.send(quote)
 
   if message.content.startswith("c!funaz"):
-    funaz=get_funaz()
+    if message.content.startswith("c!funaz 2"):
+      funaz=get_funaz2()
+    elif message.content.startswith("c!funaz2"):
+      funaz=get_funaz2()
+    else:
+      funaz=get_funaz1()
     await message.channel.send(funaz)
 
   if message.content.startswith("c!fuňáz"):
-    funaz=get_funaz()
+    if message.content.startswith("c!fuňáz 2"):
+      funaz=get_funaz2()
+    elif message.content.startswith("c!fuňáz2"):
+      funaz=get_funaz2()
+    else:
+      funaz=get_funaz1()
     await message.channel.send(funaz)
   
   if message.content.startswith('c!rand'):
