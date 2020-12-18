@@ -6,6 +6,9 @@ import random
 from keep_alive import keep_alive
 
 client = discord.Client()
+chicktron_hate_crimes = ["chicktron gay", "ban chicktron", "fuck chicktron", "chicktron ban", "chicktron je zly", "chicktron je nahovno"]
+starter_comebacks = ["No u", "ok bomer", "kden"]
+emojis = [":orangutan:", ":sunglasses:", ":control_knobs:", ":flushed:", ":partying_face:", ":dancer:",":eye::lips::eye:", ":mechanical_leg:", ":bamboo:", ":hamburger:"]
 
 def get_quote():
   response = requests.get("https://zenquotes.io/api/random")
@@ -45,9 +48,6 @@ async def on_message(message):
 
   if message.content.startswith("%appdata%"):
     await message.channel.send(".minecraft")
-
-  if message.content.startswith("2+2"):
-    await message.channel.send("4 :sunglasses:")
     
   if message.content.startswith("c!secret"):
     await message.channel.send("https://Chicktron.leosefcik.repl.co")
@@ -85,7 +85,14 @@ async def on_message(message):
         msg = msg + " " + saz[x]
       await message.channel.send(msg)
     else:
-      await message.channel.send("```yaml\nUsage:\n\n- say [message]")
+      await message.channel.send("```yaml\nUsage:\n\n- say [message]```")
+  
+  if message.content.startswith("c!math "):
+    methplus = message.content.split("+")
+    calc = 0
+    for x in range(1,len(methplus)):
+      calc = calc + int(methplus[x])
+    await message.channel.send(calc)
 
 keep_alive()
 client.run(os.getenv("TOKEN"))
