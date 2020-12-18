@@ -4,6 +4,15 @@ import requests
 import json
 import random
 from keep_alive import keep_alive
+from replit import db
+
+db["funaz_times_used"] = db["funaz_times_used"]
+db["quote_times_used"] = db["quote_times_used"]
+db["rand_times_used"] = db["rand_times_used"]
+db["emoji_times_used"] = db["emoji_times_used"]
+db["no_u_replies"] = db["no_u_replies"]
+db["fun_reply_times_used"] = db["fun_reply_times_used"]
+db["rare_message_appearances"] = db["rare_message_appearances"]
 
 client = discord.Client()
 
@@ -49,7 +58,7 @@ async def on_message(message):
   
   if message.content.startswith("c!help"):
     if message.content.startswith("c!help useful"):
-      await message.channel.send('```yaml\n--== Chicktron Useful Commands Page ==--\n\n\nCommands are prefixed with: c!\n\n- info: Info about Chicktron\n- rand: Takes 2 numbers, generates a random one between the 2 (example: "c!rand 1 10" would return a random number between 1-10)```')
+      await message.channel.send('```yaml\n--== Chicktron Useful Commands Page ==--\n\n\nCommands are prefixed with: c!\n\n- info: Info about Chicktron\n- rand: Takes 2 numbers, generates a random one between the 2 (example: "c!rand 1 10" would return a random number between 1-10)\n- stats: Chicktron statistics```')
     elif message.content.startswith("c!help fun"):
       await message.channel.send("```yaml\n--== Chicktron Fun Commands Page ==--\n\n\nCommands are prefixed with: c!\n\n- funaz/joke: Random joke (fuňáz)\n- funaz/joke2: Random joke from 2nd database, may contain inappropriate jokes\n- quote: Random inspirational quote\n- emoji: Gives you an emoji from a list of them\n\n- Prefixed Reply Commands: chicktron, idk, dozadgaming, h, s, vajca\n- Unprefixed Reply Commands: %appdata%, 2+2, get real, death, banánstvo, lolic, ňrat\n\nCan you find the secret commands? There could be only one, or there could be a bunch of them...```")
     elif message.content.startswith("c!help features"):
@@ -57,13 +66,19 @@ async def on_message(message):
     else:
       await message.channel.send("```yaml\n--== Chicktron Help Commands Page ==--\n\n\nCommands are prefixed with: c!\n\n- help: This help\n- help useful: Useful commands\n- help fun: Fun commands\n- help features: Passive chicktron actions```")
 
+  if message.content.startswith("c!stats"):
+    await message.channel.send("```yaml\n--== Chicktron Statictics ==--\n\n\n- Times funaz used: "+str(db["funaz_times_used"])+"\n- Times quote used: "+str(db["quote_times_used"])+"\n- Times rand used: "+str(db["rand_times_used"])+"\n- Emoji times used: "+str(db["emoji_times_used"])+"\n- No u replies: "+str(db["no_u_replies"])+"\n- Fun replies: "+str(db["fun_reply_times_used"])+"\n\n- Rare message appearances (0,01%): "+str(db["rare_message_appearances"])+"\n```")
+
   if message.content.startswith("c!chicktron"):
+    db["fun_reply_times_used"]=db["fun_reply_times_used"]+1
     await message.channel.send("cock-a-doodle-doo")
 
   if message.content.startswith("c!idk"):
+    db["fun_reply_times_used"]=db["fun_reply_times_used"]+1
     await message.channel.send("idk")
 
   if message.content.startswith("%appdata%"):
+    db["fun_reply_times_used"]=db["fun_reply_times_used"]+1
     await message.channel.send(".minecraft")
     
   if message.content.startswith("c!secret"):
@@ -74,19 +89,23 @@ async def on_message(message):
 
   if message.content.startswith("c!quote"):
     quote=get_quote()
+    db["quote_times_used"]=db["quote_times_used"]+1
     await message.channel.send(quote)
 
   if any(word in message.content for word in funaz_2_list):
     funaz=get_funaz2()
+    db["funaz_times_used"]=db["funaz_times_used"]+1
     await message.channel.send(funaz)
   elif any(word in message.content for word in funaz_1_list):
     funaz=get_funaz1()
+    db["funaz_times_used"]=db["funaz_times_used"]+1
     await message.channel.send(funaz)
   
   
   if message.content.startswith("2+2"):
     emoji = random.randint(0,len(emojis))
     msg = "4 "+emojis[emoji]
+    db["fun_reply_times_used"]=db["fun_reply_times_used"]+1
     await message.channel.send(msg)
   
   if message.content.startswith('c!rand'):
@@ -95,6 +114,7 @@ async def on_message(message):
       NumberX = int(nums[1])
       NumberY = int(nums[2])
       msg = "`" + str(random.randint(NumberX,NumberY)) + "`"
+      db["rand_times_used"]=db["rand_times_used"]+1
       await message.channel.send(msg)
     else:
       await message.channel.send("```yaml\nUsage:\n\n- rand [1st number] [2nd number]```")
@@ -117,47 +137,64 @@ async def on_message(message):
     await message.channel.send(calc)
 
   if message.content.startswith("c!emoji"):
+    db["emoji_times_used"]=db["emoji_times_used"]+1
     await message.channel.send(random.choice(emojis))
 
   if message.content.startswith("get real"):
+    db["fun_reply_times_used"]=db["fun_reply_times_used"]+1
     await message.channel.send("https://tenor.com/view/get-real-chinese-egg-man-chinese-guy-eats-raw-eggs-raw-eggs-raw-eggs-chug-gif-19458097")
 
   if message.content.startswith("death"):
-    await message.channel.send("https://tenor.com/view/walter-white-falling-fast-gif-18043850")
+    db["fun_reply_times_used"]=db["fun_reply_times_used"]+1
+    await message.channel.send
+    ("https://tenor.com/view/walter-white-falling-fast-gif-18043850")
 
   if message.content.startswith("banánstvo"):
+    db["fun_reply_times_used"]=db["fun_reply_times_used"]+1
     await message.channel.send(":banana:")
 
   if message.content.startswith("c!dozadgaming"):
+    db["fun_reply_times_used"]=db["fun_reply_times_used"]+1
     await message.channel.send("https://tenor.com/view/fish-lip-thicc-thick-nibba-gif-13850958")
 
   if message.content.startswith("c!h"):
     if message.content.startswith("c!help"):
       print("nothing")
     else:
+      db["fun_reply_times_used"]=db["fun_reply_times_used"]+1
       await message.channel.send("https://cdn.discordapp.com/attachments/743569092061036644/789529752854986772/h.gif")
 
   if message.content.startswith("c!s"):
-    await message.channel.send("https://cdn.discordapp.com/attachments/743569092061036644/789529764926849045/s.gif")
+    if message.content.startswith("c!stats"):
+      print("nothing")
+    else:
+      db["fun_reply_times_used"]=db["fun_reply_times_used"]+1
+      await message.channel.send("https://cdn.discordapp.com/attachments/743569092061036644/789529764926849045/s.gif")
 
   if message.content.startswith("lolic"):
+    db["fun_reply_times_used"]=db["fun_reply_times_used"]+1
     await message.channel.send("https://cdn.discordapp.com/attachments/693552113254662256/760953024247496774/image0.gif")
   
   if message.content.startswith("ňrat"):
+    db["fun_reply_times_used"]=db["fun_reply_times_used"]+1
     await message.channel.send("https://cdn.discordapp.com/attachments/743569092061036644/789532988458795021/nrat.mp4")
 
   if message.content.startswith("c!vajca"):
+    db["fun_reply_times_used"]=db["fun_reply_times_used"]+1
     await message.channel.send("https://cdn.discordapp.com/attachments/743569092061036644/789534999929815090/vajca.mp4")
 
   if any(word in message.content for word in no_u_list):
+    db["no_u_replies"]=db["no_u_replies"]+1
     await message.channel.send(message.content)
 
   if any(word in message.content for word in no_i_list):
+    db["no_u_replies"]=db["no_u_replies"]+1
     await message.channel.send("yes u")
 
 
   secret=random.randint(1,100000)
   if secret==69:
+    db["rare_message_appearances"]=db["rare_message_appearances"]+1
     await message.channel.send("This message has a 1 in 100000 chance of showing up!")
 
 #  if client.user.mentioned_in(message):
